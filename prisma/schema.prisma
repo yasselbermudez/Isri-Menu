@@ -1,0 +1,123 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+model Profile {
+  id        String  @id @db.Uuid          // mismo uuid que auth.users.id
+  role      String  @default("owner")     // owner | superadmin
+  fullName  String? @map("full_name")
+  avatarUrl String? @map("avatar_url")
+  @@map("profiles")
+}
+
+model Business {
+  id            String   @id @default(uuid()) @db.Uuid
+  ownerId       String    @map("owner_id") @db.Uuid
+  slug          String   @unique
+  name          String
+
+  state         String
+  status        String    @default("draft") // draft | pending_payment | active | suspended
+  subscriptionStatus String?   @map("subscription_status")
+
+  logo          String
+  cover         String
+  description   String
+  address       String
+  city          String
+  
+  country       String
+  phone         String
+  email         String
+  website       String?
+  instagram     String?
+  facebook      String?
+  youtube       String?
+  isOpen        Boolean  @default(true)
+  published     Boolean   @default(false)
+
+  nextOpening   String?
+  currency      String
+  priceRange    String
+  rating        Float    @default(0)
+  reviewsCount  Int      @default(0)
+  delivery      Boolean  @default(false)
+  pickup        Boolean  @default(false)
+
+  categories    Category[]
+
+  // Si en el futuro quieres características dinámicas (checklist configurable
+  // desde el panel), descomenta esto y crea el modelo BusinessFeature abajo:
+  // features   BusinessFeature[]
+  
+  paidUntil     DateTime? @map("paid_until")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("businesses")
+}
+
+model Category {
+  id          String   @id @default(uuid()) @db.Uuid
+  businessId  String   @map("business_id") @db.Uuid
+
+  business    Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  name        String
+  slug        String
+  image       String
+  description String?
+
+  products    Product[]
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([businessId, slug]) // el slug de categoría es único DENTRO de cada negocio
+  @@map("categories")
+}
+
+model Product {
+  id          String    @id @default(uuid()) @db.Uuid
+  categoryId  String?   @map("category_id") @db.Uuid
+
+  category    Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  name        String
+  slug        String
+  price       Float
+  description String
+  reviews     Int       @default(0)
+  image       String
+  active      Boolean   @default(true)
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("products")
+}
+
+model GlobalCategory {
+  id     String @id @default(uuid()) @db.Uuid
+  name   String
+  slug   String @unique
+  stores String[] @default([]) @db.Uuid
+  @@map("global_categories")
+}
+
+// Ejemplo opcional para características dinámicas por negocio (no activado):
+// model BusinessFeature {
+//   id         String   @id @default(uuid())
+//   businessId String
+//   business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+//   label      String   // "Wifi gratis", "Apto para mascotas"
+//   icon       String?  // nombre de icono, opcional
+//   @@map("business_features")
+// }
