@@ -1,7 +1,14 @@
 import {Icons} from "../Icons"
 import Link from 'next/link';
 
-export default function CategoryHeader ({storeSlug,categorySlug,storeName}:{storeSlug:string,categorySlug:string,storeName:string}){
+interface HeaderProps{
+    storeSlug:string,
+    categorySlug:string,
+    storeName:string,
+    children: React.ReactNode
+}
+
+export default function CategoryHeader ({storeSlug,categorySlug,storeName,children}:HeaderProps){
 
     return(
         <header 
@@ -26,9 +33,7 @@ export default function CategoryHeader ({storeSlug,categorySlug,storeName}:{stor
             <button type="button" aria-label="Compartir categoría">
                 <Icons.IcoShare className="w-6 h-6" />
             </button>
-            <button type="button" aria-label="opciones">
-                <Icons.IcoMenu className="w-6 h-6 fill-current" />
-            </button>
+            {children}
             </div>
         </header>
     )

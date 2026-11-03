@@ -6,7 +6,6 @@ import { CategoryNav } from '@/components/store/CategoryNav';
 import { CategorySection } from '@/components/store/CategorySection';
 import { StoreFooter } from '@/components/store/StoreFooter';
 import { CategoryChips } from '@/components/store/CategoryChips';
-import Link from 'next/link';
 
 export default async function StorePage({ params }: { params: { slug: string } }) {
 

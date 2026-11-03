@@ -6,9 +6,10 @@ interface TopBarProps {
   storeName: string;
   storeSlug: string;
   categoryName: string;
+  children?: React.ReactNode
 }
 
-export function TopBar({ storeName, storeSlug, categoryName }: TopBarProps) {
+export function TopBar({ storeName, storeSlug, categoryName,children}: TopBarProps) {
   const handleShare = async () => {
     if (typeof navigator !== "undefined" && navigator.share) {
       try {
@@ -77,6 +78,7 @@ export function TopBar({ storeName, storeSlug, categoryName }: TopBarProps) {
               />
             </svg>
           </button>
+          {children}
         </div>
       
     </header>

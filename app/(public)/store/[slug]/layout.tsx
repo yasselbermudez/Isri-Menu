@@ -4,7 +4,7 @@ export default function StoreLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="mx-auto w-full max-w-lg min-h-screen bg-background text-foreground">
+    <div className="mx-auto w-full max-w-lg min-h-screen text-foreground">
       {children}
     </div>
   );
