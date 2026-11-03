@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import type { Business } from '../../lib/types';
 import Image from 'next/image';
+import StoreMenuSheet from './MenuSheet';
 
 export function StoreHeader({ business }: { business: Business }) {
   // const opensIn = business.opensIn;
@@ -73,24 +74,13 @@ export function StoreHeader({ business }: { business: Business }) {
           </svg>
         </button>
 
-        <button
-          aria-label="Opciones"
-          type="button"
-          className="p-1.5 rounded-md transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            className="w-6 h-6"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            fill="none"
-          >
-            <path
-              d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"
-              strokeLinecap="round"
-            />
-          </svg>
-        </button>
+          <StoreMenuSheet
+            storeName={business.name}
+            storeSlug={business.slug}
+            storeLogo={business.logo}
+            storeType={'restaurante'}
+          />
+       
       </div>
     </header>
   );

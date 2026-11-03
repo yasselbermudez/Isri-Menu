@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import CategoryHeader from '@/components/category/CategoryHeader';
 import ProductsList from '@/components/category/ProductsList';
 import { StoreFooter } from '@/components/store/StoreFooter2';
+import StoreMenuSheet from '@/components/store/MenuSheet';
 
 export default async function CategoryPage({ params }: { params: { slug: string, categorySlug: string} }) {
   
@@ -25,7 +26,14 @@ export default async function CategoryPage({ params }: { params: { slug: string,
           storeSlug={storeSlug}
           storeName={business.name}
           categorySlug={categorySlug}
-        />
+        >
+          <StoreMenuSheet
+            storeName={business.name}
+            storeSlug={business.slug}
+            storeLogo={business.logo}
+            storeType={'restaurante'}
+          />
+        </CategoryHeader>
       <main className="pb-4">
         <ProductsList
           storeSlug={storeSlug}

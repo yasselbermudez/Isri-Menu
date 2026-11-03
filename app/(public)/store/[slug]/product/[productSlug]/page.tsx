@@ -7,6 +7,7 @@ import { CategoryChips } from "@/components/store/CategoryChips";
 import { StoreFooter } from "@/components/store/StoreFooter2";
 import { getBusiness, getCategories,getProductBySlug} from '@/lib/store';
 import { notFound } from 'next/navigation';
+import StoreMenuSheet from "@/components/store/MenuSheet";
 
 const formatPrice = (n: number) =>
   n.toLocaleString("es-CU", {
@@ -40,7 +41,14 @@ export default async function ProductPage({ params }: { params: { slug: string, 
         storeName={business.name}
         storeSlug={business.slug}
         categoryName={categorieName}
-      />
+      >
+        <StoreMenuSheet
+          storeName={business.name}
+          storeSlug={business.slug}
+          storeLogo={business.logo}
+          storeType={'restaurante'}
+        />
+      </TopBar>
         <main className="mx-auto min-h-screen flex flex-col">
           <div className="bg-card">
             <ProductGallery images={[product.image]} alt={product.name} />
