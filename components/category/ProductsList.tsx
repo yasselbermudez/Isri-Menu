@@ -1,7 +1,9 @@
 'use client'
+import { AddToCartButton } from "@/features/cart/components/add-to-cart-button";
 import {Icons} from "../Icons"
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
+import Image from 'next/image'
 
 type Product = {
   id: string;
@@ -19,9 +21,6 @@ const formatPrice = (price: number) =>
   })} CUP`;
 
 export default function ProductsList ({storeSlug,products}:{storeSlug:string,products:Product[]}){
-
-
-    const [quantities, setQuantities] = useState<Record<string, number>>({});
   const [sortBy, setSortBy] = useState<'default' | 'low_price' | 'high_price' | 'news_from_date'>(
     'default',
   );
@@ -39,18 +38,6 @@ export default function ProductsList ({storeSlug,products}:{storeSlug:string,pro
         return copy;
     }
   }, [sortBy]);
-
-  const increment = (id: string) =>
-    setQuantities((prev) => ({ ...prev, [id]: (prev[id] ?? 0) + 1 }));
-  const decrement = (id: string) =>
-    setQuantities((prev) => {
-      const next = (prev[id] ?? 0) - 1;
-      if (next <= 0) {
-        const { [id]: _, ...rest } = prev;
-        return rest;
-      }
-      return { ...prev, [id]: next };
-    });
 
     return(
         <div className="bg-card mb-2.5">
@@ -82,16 +69,16 @@ export default function ProductsList ({storeSlug,products}:{storeSlug:string,pro
 
           <div className="grid grid-cols-2 grid-flow-row-dense gap-2 px-4 py-4">
             {sortedProducts.map((product) => {
-              const qty = quantities[product.id] ?? 0;
               const href = `/store/${storeSlug}/product/${product.slug}`;
               return (
                 <div key={product.id} className="relative">
                   <Link href={href}>
                     <div className="relative aspect-square rounded-lg overflow-hidden border border-border bg-muted">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
+                      <Image
                         src={product.image}
                         alt={product.name}
+                        width={480}
+                        height={480}
                         loading="lazy"
                         className="absolute inset-0 w-full h-full object-cover"
                       />
@@ -109,44 +96,11 @@ export default function ProductsList ({storeSlug,products}:{storeSlug:string,pro
                         </div>
                       )}
                     </Link>
-
-                    {/* Control de cantidad */}
-                    <div className="flex-none relative w-9 h-9">
-                      {qty === 0 ? (
-                        <button
-                          type="button"
-                          onClick={() => increment(product.id)}
-                          aria-label="Añadir"
-                          className="w-9 h-9 text-primary-foreground rounded-full bg-primary hover:bg-primary-hover flex items-center justify-center transition-colors"
-                        >
-                          <Icons.IcoPlus className="w-4 h-4" />
-                        </button>
-                      ) : (
-                        <div className="absolute top-0 right-0 h-9 flex items-center rounded-full bg-primary text-primary-foreground shadow-md">
-                          <button
-                            type="button"
-                            onClick={() => decrement(product.id)}
-                            aria-label="Disminuir"
-                            className="w-9 h-9 flex items-center justify-center hover:bg-primary-hover rounded-l-full transition-colors"
-                          >
-                            <Icons.IcoMinus className="w-4 h-4" />
-                          </button>
-                          <span className="text-xs font-semibold min-w-[16px] text-center">
-                            {qty}
-                          </span>
-                          <button
-                            type="button"
-                            onClick={() => increment(product.id)}
-                            aria-label="Añadir"
-                            className="w-9 h-9 flex items-center justify-center hover:bg-primary-hover rounded-r-full transition-colors"
-                          >
-                            <Icons.IcoPlus className="w-4 h-4" />
-                          </button>
-                        </div>
-                      )}
-                    </div>
+                    
+                    <AddToCartButton storeSlug={storeSlug} product={{...product,stock:10000}} />
                   </div>
-
+                  
+                  
                   <div className="text-sm mt-1">
                     <span className="text-primary-accent font-semibold">
                       {formatPrice(product.price)}

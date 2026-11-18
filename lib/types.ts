@@ -68,7 +68,7 @@ export interface DaySchedule {
 export interface BusinessSettings {
   id: string;
   name: string;
-  logo: string;
+  logo: string | File;
   heroImage: string | File;
   description: string;
   schedule: DaySchedule[];

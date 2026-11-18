@@ -25,7 +25,7 @@ export default function GeneralSettingsSection({
   async function handleSaveBusiness(data: BusinessSettings) {
     const update: UpdateBusinessInput = {
       name: data.name,
-      logo: data.logo,
+      logo: data.logo instanceof File ? data.logo : undefined,
       cover: data.heroImage instanceof File ? data.heroImage : undefined,
       description: data.description,
       phone: data.phone,
@@ -55,7 +55,18 @@ export default function GeneralSettingsSection({
 
   return (
     <div className="flex flex-col gap-6 pb-4">
-      <ImageUploader label="Imagen destacada (hero)" value={form.heroImage} onChange={(url) => set('heroImage', url)} aspect="aspect-square" />
+      <ImageUploader 
+        label="Imagen destacada (hero)" 
+        value={form.heroImage} 
+        onChange={(url) => set('heroImage', url)} 
+        aspect="aspect-square" 
+      />
+      <ImageUploader 
+        label="Imagen del logo" 
+        value={form.logo} 
+        onChange={(url) => set('logo', url)} 
+        aspect="aspect-square" 
+      />
 
       <div>
         <FormLabel>Nombre del negocio</FormLabel>
