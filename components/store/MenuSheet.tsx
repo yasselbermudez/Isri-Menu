@@ -6,6 +6,7 @@ import type { ReactNode } from "react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Icons } from "../Icons"
 import Image from "next/image"
+import { ThemeToggle } from "../ThemeToggle"
 
 type StoreMenuSheetProps = {
   storeSlug: string
@@ -81,6 +82,9 @@ export default function StoreMenuSheet({
         {/* ───────── Menu items ───────── */}
         <nav className="flex flex-col gap-2 pt-2 pb-8 overflow-y-auto">
           {/* Categorías */}
+
+          <ThemeToggle></ThemeToggle>
+
           <button
             type="button"
             onClick={onCategoriesClick}
